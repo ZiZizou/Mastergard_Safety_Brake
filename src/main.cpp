@@ -66,14 +66,14 @@ float getAccelData(){
 }
 
 /*
-@Function void circuitOperate()
-parameters: None
+@Function void circuitOperate(int flash)
+parameters: int flash - number of times light must flash
 does: Uses PIN-7 and PIN-6 to drive relays to effectively flash an LED parallely
 returns: NONE
 */
-void circuitOperate(){
+void circuitOperate(int flash){
 
-  for(int i = 0; i< FLASHES;i++){
+  for(int i = 0; i< flash;i++){
     digitalWrite(PIN7, HIGH);
     delay(CHARGE_TIME_MS);  //light dimmed
     digitalWrite(PIN7, LOW);  
@@ -121,8 +121,10 @@ void loop()
 {
 
   float accel_data = getAccelData();
-  emergencyFilter(accel_data, prev);
+  if(emergencyFilter(accel_data, prev)){
+    circuitOperate(FLASHES);
+  }
   prev = accel_data;  //update prev value for the next cycle
-  delay(500);  //delay between consecutive data points is 25ms
+  delay(25);  //delay between consecutive data points is 25ms
 
 }
