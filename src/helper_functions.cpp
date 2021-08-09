@@ -1,5 +1,7 @@
-#include <Arduino.h>
-#include "helper.h"
+#include "helper_functions.h"
+
+extern int charge_time;
+extern int discharge_time;
 
 /*
 @Function void IMUConnect()
@@ -37,7 +39,7 @@ void IMUConnect(LSM6DSO* imu) {
 /*
 @Function void getAccelData()
 parameters: LSM6DSO* imu
-does: obtains acceleration value along one axis and applies correction to it
+does: obtains acceleration value along one axis and applies correction to it. Acceleration value returned is in g's. Example - 0.987 output indicates 0.987g
 returns: double value of acceleration in x axis
 */
 float getAccelData(LSM6DSO* imu){
@@ -61,11 +63,11 @@ void circuitOperate(int flash){
 
   for(int i = 0; i< flash;i++){
     digitalWrite(PIN7, HIGH);
-    delay(CHARGE_TIME_MS);  //light dimmed
+    delay(charge_time);  //light dimmed
     digitalWrite(PIN7, LOW);  
     delay(50); 
     digitalWrite(PIN6, HIGH);
-    delay(DISCHARGE_TIME_MS); //preparing capacitor for charging again
+    delay(discharge_time); //preparing capacitor for charging again
     digitalWrite(PIN6, LOW);
   }
 

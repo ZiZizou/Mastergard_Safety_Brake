@@ -1,6 +1,7 @@
 #include "Wire.h"
 #include <Arduino.h>
-#include "helper.h"
+#include "helper_functions.h"
+#include "toggle_interrupt.h"
 
 //#include "SPI.h"
 
@@ -10,16 +11,20 @@ float prev; //stores previous value of acceleration to be compared with current 
 
 
 
+
 void setup() {
 
   Serial.begin(9600);
   pinMode(PIN7, OUTPUT);  //set relay1_switch pin to output
   pinMode(PIN6, OUTPUT);  //set relay2_switch pin to output 
+  pinMode(PIN2, INPUT); //set pin-5 to be flashing mode selector 
   Serial.println("FLASHING PINS SET");
 
   delay(500); 
   
   IMUConnect(&myIMU);
+
+  attachInterrupt(digitalPinToInterrupt(PIN2), toggle_ISR, RISING);  //trigger interrupt on seeing rising edge on PIN-2 
 
 }
 
@@ -35,3 +40,4 @@ void loop()
   delay(25);  //delay between consecutive data points is 25ms
 
 }
+
