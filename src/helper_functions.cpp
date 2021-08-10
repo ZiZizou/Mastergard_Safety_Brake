@@ -28,7 +28,7 @@ void IMUConnect(LSM6DSO* imu) {
   if( imu->initialize(BASIC_SETTINGS) )
     Serial.println("Loaded Settings.");
 
-  imu->setAccelRange(ACCEL_SCALE);  //setting accelerometer full scale value to 16g
+  imu->setAccelRange(ACCEL_SCALE);  //setting accelerometer full scale value to 16g - max value recordable = 157 m/s^2
   Serial.print("Accelerometer full scale value - ");
   Serial.println(imu->getAccelRange());
 

@@ -20,6 +20,8 @@ void setup() {
   pinMode(PIN2, INPUT); //set pin-5 to be flashing mode selector 
   Serial.println("FLASHING PINS SET");
 
+  EEPROM_setup(); //perform eeprom writes for different configurations if not already done
+
   delay(500); 
   
   IMUConnect(&myIMU);
