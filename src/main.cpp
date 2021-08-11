@@ -26,6 +26,8 @@ void setup() {
   
   IMUConnect(&myIMU);
 
+  interrupts(); //enable interrupts (in case interrupts have been disabled)
+
   attachInterrupt(digitalPinToInterrupt(PIN2), toggle_ISR, RISING);  //trigger interrupt on seeing rising edge on PIN-2 
 
 }

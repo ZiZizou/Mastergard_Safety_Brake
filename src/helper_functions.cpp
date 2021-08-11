@@ -62,6 +62,7 @@ returns: NONE
 void circuitOperate(int flash){
 
   for(int i = 0; i< flash;i++){
+    delay(100); //initial delay for brake light to switch on
     digitalWrite(PIN7, HIGH);
     delay(charge_time);  //light dimmed
     digitalWrite(PIN7, LOW);  
