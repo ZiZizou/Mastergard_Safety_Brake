@@ -17,18 +17,20 @@ void setup() {
   Serial.begin(9600);
   pinMode(PIN7, OUTPUT);  //set relay1_switch pin to output
   pinMode(PIN6, OUTPUT);  //set relay2_switch pin to output 
-  pinMode(PIN2, INPUT); //set pin-5 to be flashing mode selector 
+  pinMode(PIN2, INPUT); //set pin-2 to be flashing mode selector 
   Serial.println("FLASHING PINS SET");
 
-  EEPROM_setup(); //perform eeprom writes for different configurations if not already done
+  //EEPROM_setup(); //perform eeprom writes for different configurations if not already done
 
-  delay(500); 
-  
+  //delay(500); 
+  Serial.println("PRE IMU SETUP");
   IMUConnect(&myIMU);
+  Serial.println("POST IMU SETUP");
 
   interrupts(); //enable interrupts (in case interrupts have been disabled)
 
   attachInterrupt(digitalPinToInterrupt(PIN2), toggle_ISR, RISING);  //trigger interrupt on seeing rising edge on PIN-2 
+  Serial.print("SETUP DONE");
 
 }
 

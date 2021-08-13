@@ -27,6 +27,8 @@ void toggle_ISR(){
         toggle_select=1;
     }
     EEPROM.update(1,toggle_select); //update mode select byte 
+    //EEPROM has very limited erasures and writes. Instead of updating everytime toggle is pressed
+    //it would be better to update only before switching off.
 
     charge_time = data[toggle_select-1][0];
     discharge_time = data[toggle_select-1][1];

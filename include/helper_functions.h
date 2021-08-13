@@ -8,6 +8,7 @@
 
 #include "SparkFunLSM6DSO.h"
 #include <Arduino.h>
+#include <Wire.h>
 
 void IMUConnect(LSM6DSO* imu);
 float getAccelData(LSM6DSO* imu);
