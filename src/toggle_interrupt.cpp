@@ -1,15 +1,15 @@
 #include "toggle_interrupt.h"
-
+#include "helper_functions.h"
 
 volatile int charge_time = CHARGE_TIME_MS_1;  //charge time initalized to zero and value is loaded from EEPROM according to toggle setting 
 volatile int discharge_time = DISCHARGE_TIME_MS_1;    //discharge time initialized to zero and value is loaded from EEPROM according to toggle setting
-volatile int toggle_select = 1;
+int toggle_select = 1;
 //toggle_select value cycles between 1 and 2. On pressing button on pin-2
 //toggle select value changes to the next configuration. Acts as a record
 //for the program to know which flashing sequence it is on. On initialization
 //toggle select takes the value of EEPROM mode select byte
 
-const int data[CONFIGURATIONS][2] = {
+const int data[PRESET_CONFIGURATIONS][2] = {
     {CHARGE_TIME_MS_1, DISCHARGE_TIME_MS_1},
     {CHARGE_TIME_MS_2, DISCHARGE_TIME_MS_2}
 };
@@ -23,16 +23,21 @@ returns: None
 void toggle_ISR(){
 
     toggle_select++;
-    if(toggle_select>CONFIGURATIONS){
-        toggle_select=1;
+    if(toggle_select==PRESET_CONFIGURATIONS+1){ //if toggle select is equal to (PRESET_CONFIGURATIONS+1) ->generate random flashing value
+        generateRandomFlashTime();  //generate random times and store it in charg_time and discharge_time
     }
-    EEPROM.update(1,toggle_select); //update mode select byte 
+
+    if(toggle_select<=PRESET_CONFIGURATIONS){
+        EEPROM.update(1,toggle_select); //update mode select byte, does not act when random flashing times mode is generated
     //EEPROM has very limited erasures and writes. Instead of updating everytime toggle is pressed
     //it would be better to update only before switching off.
+        charge_time = data[toggle_select-1][0];
+        discharge_time = data[toggle_select-1][1];
+    }
 
-    charge_time = data[toggle_select-1][0];
-    discharge_time = data[toggle_select-1][1];
-
+    if(toggle_select>PRESET_CONFIGURATIONS+1){
+        toggle_select=1;    //reset toggle_select after it goes past PRESET_CONFIGURATIONS+1
+    }
 }
 
 /*

@@ -91,3 +91,17 @@ bool emergencyFilter(float current_val, float prev_val){
   }
   return false;
 }
+
+/*
+@Function void generateRandomFlashTime()
+parameters: none
+does: Uses random module to generate charge and discharge times and stores them in charge_time and discharge_time variables
+returns: None
+*/
+void generateRandomFlashTime(){
+
+  charge_time = random(MIN_CHARGE_TIME, 800);
+  discharge_time = random(MIN_DISCHARGE_TIME,800);
+
+}
+
