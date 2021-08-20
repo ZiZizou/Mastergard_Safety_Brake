@@ -1,4 +1,5 @@
 #include "helper_functions.h"
+#include <math.h>
 
 extern int charge_time;
 extern int discharge_time;
@@ -38,18 +39,28 @@ void IMUConnect(LSM6DSO* imu) {
 
 /*
 @Function void getAccelData()
-parameters: LSM6DSO* imu
-does: obtains acceleration value along one axis and applies correction to it. Acceleration value returned is in g's. Example - 0.987 output indicates 0.987g
-returns: double value of acceleration in x axis
+parameters: LSM6DSO* imu, uint8_t selection
+does: obtains acceleration value along axis specified by selection parameter and applies correction to it. Acceleration value returned is in g's. Example - 0.987 output indicates 0.987g
+if selection is 1, then return value is accln along x axis. If 2, then accln along y axis. If 3 then accln along z axis.
+returns: double value of acceleration in the axis specified by the selection parameter.
 */
-float getAccelData(LSM6DSO* imu){
+float getAccelData(LSM6DSO* imu, uint8_t selection){
 
   // Serial.print("\nAccelerometer:");
   // Serial.print(" X = ");
-  float x_accel = imu->readFloatAccelX();
-  x_accel -= CORRECTION;  //remove zero error from the value
-  Serial.println(x_accel, 3);
-  return x_accel;
+  float returnData = 0; //default value if no correct value of selection is used
+  if(selection==1){
+    returnData = imu->readFloatAccelX();
+  }
+  else if(selection==2){
+    returnData = imu->readFloatAccelY();
+  }
+  else if(selection==3){
+    returnData = imu->readFloatAccelZ();
+  }
+  returnData -= CORRECTION;  //remove zero error from the value
+  // Serial.println(x_accel, 3);
+  return returnData;
 
 }
 
@@ -76,16 +87,16 @@ void circuitOperate(int flash){
 
 /*
 @Function void emergencyFilter(float current_val, float prev_val)
-parameters: current_val, prev_val - both floats
-does: Uses parameter values and THRESH Macro to determine whether emergency braking condition is met
+parameters: float current_val, float prev_val, float dynamicThreshold
+does: Uses parameter values to determine whether emergency braking condition is met
 returns: boolean
 */
-bool emergencyFilter(float current_val, float prev_val){
+bool emergencyFilter(float current_val, float prev_val, float dynamicThreshold){
 
   if(current_val*prev_val<0){ //checks if the current val and the previous val have differing signs. 
   //If true, this means that deceleration is happening.
   float change = abs(current_val-prev_val);
-  if(change>=THRESHOLD){
+  if(change>=dynamicThreshold){
       return true;  //if there is sign change and change is larger than or equal to threshold then return true
    }
   }
@@ -105,3 +116,16 @@ void generateRandomFlashTime(){
 
 }
 
+
+/*
+@Function void generateDynamicThreshold()
+parameters: float yAccelerometer, float *dynamicThreshold
+does: Uses yAccelerometer value to judge inclination and dynamically change the Emergency Braking Threshold via its pointer
+returns: None
+*/
+void generateDynamicThreshold(float yAccelerometer, float *dynamicThreshold){
+
+  float inclinationAngle = acos(yAccelerometer);
+  *dynamicThreshold = inclinationAngle*DYNAMIC_THRESHOLD_SLOPE + DEFAULT_THRESHOLD;
+
+}
