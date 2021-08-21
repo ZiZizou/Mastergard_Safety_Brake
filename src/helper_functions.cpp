@@ -1,8 +1,11 @@
 #include "helper_functions.h"
 #include <math.h>
+// #include <neotimer.h>
+
 
 extern int charge_time;
 extern int discharge_time;
+
 
 /*
 @Function void IMUConnect()
@@ -59,31 +62,31 @@ float getAccelData(LSM6DSO* imu, uint8_t selection){
     returnData = imu->readFloatAccelZ();
   }
   returnData -= CORRECTION;  //remove zero error from the value
-  // Serial.println(x_accel, 3);
+  // Serial.println(returnData, 3);
   return returnData;
 
 }
 
-/*
-@Function void circuitOperate(int flash)
-parameters: int flash - number of times light must flash
-does: Uses PIN-7 and PIN-6 to drive relays to effectively flash an LED parallely
-returns: NONE
-*/
-void circuitOperate(int flash){
+// /*
+// @Function void circuitOperate(int flash)  ***REDUNDANT FUNCTION
+// parameters: int flash - number of times light must flash
+// does: Uses PIN-7 and PIN-6 to drive relays to effectively flash an LED parallely
+// returns: NONE
+// */
+// void circuitOperate(int flash){
 
-  for(int i = 0; i< flash;i++){
-    delay(100); //initial delay for brake light to switch on
-    digitalWrite(PIN7, HIGH);
-    delay(charge_time);  //light dimmed
-    digitalWrite(PIN7, LOW);  
-    delay(50); 
-    digitalWrite(PIN6, HIGH);
-    delay(discharge_time); //preparing capacitor for charging again
-    digitalWrite(PIN6, LOW);
-  }
+//   delay(100); //initial delay for brake light to switch on
+//   for(int i = 0; i< flash;i++){
+//     digitalWrite(PIN7, HIGH);
+//     delay(charge_time);  //light dimmed
+//     digitalWrite(PIN7, LOW);  
+//     delay(50); 
+//     digitalWrite(PIN6, HIGH);
+//     delay(discharge_time); //preparing capacitor for charging again
+//     digitalWrite(PIN6, LOW);
+//   }
 
-}
+// }
 
 /*
 @Function void emergencyFilter(float current_val, float prev_val)
