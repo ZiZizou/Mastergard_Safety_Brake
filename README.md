@@ -35,3 +35,11 @@ of emergencyFilterSimplified must be uncommented.
 
 ![image](https://user-images.githubusercontent.com/66683154/132103312-f1e3cb7f-e0ce-4e47-99e7-6f364345aca8.png)
 **(inside main.cpp)**
+
+
+-------x
+
+**CIRCUIT SCHEMATIC**
+
+![image](https://user-images.githubusercontent.com/66683154/132103531-e81a1a9d-ff6e-438d-a8eb-b2e6617cc4be.png)
+
