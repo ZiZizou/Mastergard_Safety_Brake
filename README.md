@@ -11,6 +11,7 @@ Going forward, commits must be made to this branch as this is the most up to dat
 The code determines whether to operate the circuit based on the emergencyFilter() function.
 This function uses two values of acceleration sourced from the accelerometer 25 ms apart to determine whether brake light flashing condition is met or not.
 ![image](https://user-images.githubusercontent.com/66683154/132103031-c6ae0f79-b381-4203-ab5b-07a7af7ef639.png)
+**(inside helper_functions.cpp)**
 It is able to do this by  - 
 1. Detecting if deceleration occurred - i.e. if the sign of acceleration has changed
 2. If the above condition is true - check if magnitude of deceleration is greater than or equal to threshold
@@ -22,10 +23,13 @@ by the circuit must be deceleration.
 
 For this reason a second function has been defined - emergencyFilterSimplified()
 ![image](https://user-images.githubusercontent.com/66683154/132103272-409732b0-77a7-4812-a364-3985f4f81778.png)
+**(inside helper_functions.cpp)**
 
 This function remains commented inside the code and the header files.
 If it is decided that the initial function does not give desire response, all known occurences of emergencyFilter() must be commented and all known occurences
 of emergencyFilterSimplified must be uncommented.
 
 ![image](https://user-images.githubusercontent.com/66683154/132103299-e28f9b36-5be1-40ce-9a55-4756ecc352b9.png)
+**(inside helper_functions.h)**
 ![image](https://user-images.githubusercontent.com/66683154/132103312-f1e3cb7f-e0ce-4e47-99e7-6f364345aca8.png)
+**(inside main.cpp)**
