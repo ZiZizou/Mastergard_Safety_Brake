@@ -28,6 +28,8 @@ void setup() {
   pinMode(PIN7, OUTPUT);  //set relay1_switch pin to output
   pinMode(PIN6, OUTPUT);  //set relay2_switch pin to output 
   pinMode(PIN2, INPUT); //set pin-2 to be flashing mode selector 
+  digitalWrite(PIN7, LOW);
+  digitalWrite(PIN6, LOW);  //initially set both switching pins low
   Serial.println("FLASHING PINS SET");
 
   //EEPROM_setup(); //perform eeprom writes for different configurations if not already done
@@ -57,9 +59,19 @@ void loop()
     chargeTimer = Neotimer(charge_time);
     dischargeTimer = Neotimer(discharge_time);
   }
+  
+  //if switching between the emergency filter functions, uncomment the below 
+  //code block and comment the above code block. 
+
+  // if(emergencyFilterSimplified(x_Accel_data, prev, emergencyThreshold)&&(!flashing)){
+  //   // circuitOperate(FLASHES);
+  //   flashing = true;
+  //   chargeTimer = Neotimer(charge_time);
+  //   dischargeTimer = Neotimer(discharge_time);
+  // }
   if (flashing&&(!dischargeTimer_state)&&(!chargeTimer_state)){
     // delay(100);
-    digitalWrite(PIN7, !digitalRead(PIN7)); //toggle PIN7 high 
+    digitalWrite(PIN7, HIGH); //toggle PIN7 high 
     Serial.println("charge timer start");
     chargeTimer.start();
     chargeTimer_state = true; //charge timer is counting
@@ -68,8 +80,8 @@ void loop()
   if(chargeTimer.done()&&(!dischargeTimer_state)&&flashing){
     Serial.println("charge timer stop");
     chargeTimer_state = false;  //charge timer is done counting
-    digitalWrite(PIN7, !digitalRead(PIN7)); //toggle PIN7 low
-    digitalWrite(PIN6, !digitalRead(PIN6)); //toggle PIN6 high
+    digitalWrite(PIN7, LOW); //toggle PIN7 low
+    digitalWrite(PIN6, HIGH); //toggle PIN6 high
     dischargeTimer.start(); //start discharge timer
     Serial.println("discharge timer start");
     dischargeTimer_state = true;  //discharge
@@ -77,7 +89,7 @@ void loop()
   if(dischargeTimer.done()&&(!chargeTimer_state)&&flashing){
     dischargeTimer_state = false; //discharge timer is done counting
     Serial.println("discharge timer stop");
-    digitalWrite(PIN6, !digitalRead(PIN6)); //toggle PIN6 low
+    digitalWrite(PIN6, LOW); //toggle PIN6 low
     flashes++;
     Serial.println(flashes);
   }

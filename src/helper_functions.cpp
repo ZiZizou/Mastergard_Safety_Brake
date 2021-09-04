@@ -106,6 +106,27 @@ bool emergencyFilter(float current_val, float prev_val, float dynamicThreshold){
   return false;
 }
 
+//if switching filter function, comment the above function and uncomment the 
+//below function
+
+// /*
+// @Function void emergencyFilterSimplified(float current_val, float prev_val)
+// parameters: float current_val, float prev_val, float dynamicThreshold
+// does: Uses parameter values to determine whether emergency braking condition is met.
+//       Does not check for sign change in acceleration value and simply operates on whether the 
+//       g-force threshold is met or exceeded.
+// returns: boolean
+// */
+// bool emergencyFilterSimplified(float current_val, float prev_val, float dynamicThreshold){
+  
+
+//   float change = abs(current_val-prev_val);
+//   if(change>=dynamicThreshold){
+//       return true;  //if there is sign change and change is larger than or equal to threshold then return true
+//    }
+//   return false;
+// }
+
 /*
 @Function void generateRandomFlashTime()
 parameters: none

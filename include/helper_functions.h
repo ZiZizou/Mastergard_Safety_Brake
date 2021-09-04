@@ -3,7 +3,7 @@
 
 #define ACCEL_SCALE 16  //defining full scale accelerometer value to be 16g
 #define CORRECTION 0.02   //defining accelerometer zero error
-#define DEFAULT_THRESHOLD 1.750  //defining the threshold for determining whether brake was pushed in emergency
+#define DEFAULT_THRESHOLD 1.5  //defining the threshold for determining whether brake was pushed in emergency
 #define FLASHES 4  //number of time led must flash before becoming solid
 #define MIN_CHARGE_TIME 125
 #define MIN_DISCHARGE_TIME 250
@@ -17,6 +17,11 @@ void IMUConnect(LSM6DSO* imu);
 float getAccelData(LSM6DSO* imu, uint8_t data);
 void circuitOperate(int flash);
 bool emergencyFilter(float current_val, float prev_val, float dynamicThreshold);
+//emergency filter function works to see check if deceleration occurs by sensing change in sign of 
+//acceleration. I have defined an alternative emergency filter function that must be used 
+//if the above does not work please comment the above line and uncomment the below line
+
+// bool emergencyFilterSimplified(float current_val, float prev_val, float dynamicThreshold);
 void generateRandomFlashTime();
 void generateDynamicThreshold(float yAccelerometer, float *dynamicThreshold);
 
