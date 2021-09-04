@@ -2,3 +2,6 @@
 
 
 Please use PlatformIO extension on Visual-Studio Code to open the project.
+This branch uses Non Blocking timers to operate the circuit.
+Use code from this branch to implement added features to run in main.cpp without delays from circuit operation. 
+Going forward, commits must be made to this branch as this is the most up to date with all requested features.
